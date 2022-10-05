@@ -10,6 +10,7 @@ class Game:
         pygame.display.set_icon(ICON)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
+        self.player = Dinosaur()
         self.playing = False
         self.game_speed = 20
         self.x_pos_bg = 0
@@ -30,7 +31,8 @@ class Game:
                 self.playing = False
 
     def update(self):
-        pass
+        user_input = pygame.key.get_pressed()
+        self.player.update(user_input)
 
     def draw(self):
         self.clock.tick(FPS)
