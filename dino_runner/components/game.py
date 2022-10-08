@@ -4,6 +4,7 @@ import pygame
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 from dino_runner.utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import GAME_OVER
 from dino_runner.components.dinosaur import Dinosaur
 
 
@@ -66,6 +67,7 @@ class Game:
         if self.points % 100 == 0:
             self.game_speed += 5
 
+
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE,30)
         text = font.render(f"Points: {self.points}", True, (0,0,0))
@@ -80,6 +82,7 @@ class Game:
         self.draw_background()
         self.draw_score()
         self.player.draw(self.screen)
+        self.player.check_invicibility(self.screen)
         self.obstacle_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         pygame.display.update()
@@ -100,9 +103,11 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing == False
                 self.runnig == False
+                pygame.quit()
 
             if event.type == pygame.KEYDOWN:
                 self.run()
+            
 
     def show_menu(self):
         self.screen.fill((255,255,255))
@@ -116,8 +121,12 @@ class Game:
             text_rect.center = (half_screen_whidth, half_screen_heigth)
             self.screen.blit(text, text_rect)
         elif self.death_count > 0:
-            pass
-
+            font = pygame.font.Font(FONT_STYLE,30)
+            text = font.render(f"Your score is {self.points} points", True, (0,0,0))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_whidth, half_screen_heigth)
+            self.screen.blit(text, text_rect)
+            self.screen.blit(GAME_OVER, (half_screen_whidth - 180, half_screen_heigth -220))
 
         self.screen.blit(RUNNING[0],(half_screen_whidth - 20,half_screen_heigth - 140))
         pygame.display.update()
