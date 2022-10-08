@@ -3,8 +3,7 @@ import pygame
 
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
-from dino_runner.utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
-from dino_runner.utils.constants import GAME_OVER
+from dino_runner.utils.constants import BG, ICON, RUNNING, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS,GAME_OVER,RESET,CLOUD 
 from dino_runner.components.dinosaur import Dinosaur
 
 
@@ -75,12 +74,20 @@ class Game:
         text_rect.center = (100, 50)
         self.screen.blit(text, text_rect)
 
+    def draw_deaths(self):
+        font = pygame.font.Font(FONT_STYLE,30)
+        text = font.render(f"Deaths: {self.death_count}", True, (0,0,0))
+        text_rect = text.get_rect()
+        text_rect.center = (100, 80)
+        self.screen.blit(text, text_rect)
+
 
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.draw_score()
+        self.draw_deaths()
         self.player.draw(self.screen)
         self.player.check_invicibility(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -90,8 +97,10 @@ class Game:
 
     def draw_background(self):
         image_width = BG.get_width()
+        self.screen.blit(CLOUD, (1100, 600))
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+        self.screen.blit(CLOUD, (1100  + self.x_pos_bg, 100))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
@@ -127,6 +136,8 @@ class Game:
             text_rect.center = (half_screen_whidth, half_screen_heigth)
             self.screen.blit(text, text_rect)
             self.screen.blit(GAME_OVER, (half_screen_whidth - 180, half_screen_heigth -220))
+            self.screen.blit(RESET, (half_screen_whidth - 25, half_screen_heigth + 40))
+
 
         self.screen.blit(RUNNING[0],(half_screen_whidth - 20,half_screen_heigth - 140))
         pygame.display.update()

@@ -59,6 +59,7 @@ LARGE_CACTUS = [
 BIRD =  pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird1.png")),
     #pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png")),
 
+RESET = pygame.image.load(os.path.join(IMG_DIR,"Other/Reset.png"))
 
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
